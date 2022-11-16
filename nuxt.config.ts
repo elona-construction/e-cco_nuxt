@@ -2,6 +2,9 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  publicRuntimeConfig: {
+    API_BASE_URL: process.env.API_BASE_URL
+},
   buildModules: ['@pinia/nuxt'],
     imports: {
         dirs: ['stores'],

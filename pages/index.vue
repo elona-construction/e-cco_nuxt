@@ -143,7 +143,7 @@
                       De combien puis-je réduire mes factures de charge avec une
                       rénovation? <br />
                       <br />Combien d'années faut-ils pour obtenir un retour sur
-                      investisse- ment?
+                      investissement?
                     </p>
                   </div>
                 </article>
@@ -341,7 +341,7 @@
                       <div class="field-body">
                         <div class="field">
                           <label class="label"
-                            >Nom
+                            > Nom
                             <span class="has-text-danger has-text-weight-normal"
                               >*</span
                             ></label
@@ -463,6 +463,9 @@
 </template>
 
 <script setup>
+ const router = useRouter()
+ const config = useRuntimeConfig()
+
 const adresse = ref("");
 const nom = ref("");
 const prenom = ref("");
@@ -486,6 +489,7 @@ function submitAdresse() {
   if (!errorsAdress.ressource.length) {
     store.setAdresse(adresse.value);
     localStorage.setItem("adresse", adresse.value);
+    router.push('/simulations')
 
     // this.$store.commit('setAdresse', this.adresse)
     // localStorage.setItem("adresse", this.adresse)
@@ -530,22 +534,20 @@ async function sendMessage() {
   };
   console.log("this is the message to be send: ", data);
 
-  //to put in await in working function
-  messageOK.value = true;
+  await $fetch( 'api/v1/contact/', {
+        baseURL: config.API_BASE_URL,
+        method: 'POST',
+        body: data
+    })
+  .then(response => {
+    console.log("RESPONSE SERVER message: ",response)
+    messageOK.value = true
+  })
+  .catch(error => {
+          errorsForm.ressource.push('Un problème est survenu. Veuillez réessayer')
+          console.log(error)
+      })
 
-  //     await axios
-  //     .post('/api/v1/contact/', data)
-  //     .then(response => {
-
-  //     console.log("RESPONSE SERVER message: ",response.data)
-  //     this.messageOK = true
-
-  //   })
-  //   .catch(error => {
-  //       this.errorsForm.push('Un problème est survenu. Veuillez réessayer')
-  //       console.log(error)
-  //   })
-  //   this.$store.commit('setIsLoading', false)
-  // },
 }
+
 </script>
