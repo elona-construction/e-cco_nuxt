@@ -22,8 +22,12 @@ export const useTestStore = defineStore('TestStore', {
     getters: {},
     actions: {
       setAdresse(adresse){
-        this.adresse = adresse
-        
+        this.adresse = adresse       
+      },
+      initializeAdresse(adresse){
+        if (localStorage.getItem('adresse')){
+        this.adresse = localStorage.getItem('adresse')
+        }else{this.adresse = ''}
       },
     },
   });

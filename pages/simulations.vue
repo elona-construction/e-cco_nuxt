@@ -240,6 +240,8 @@
 
 onMounted(() => {
     console.log('mounted!')
+    // console.log('useLocalstorage',useLocalStorage('pinia/auth/login'))
+    tellLocal()
     submitSimulation()
 })
 
@@ -303,6 +305,14 @@ const totalCost = computed(() => {
 
   return totalFormat
 })
+
+function tellLocal(){
+  console.log('adresse in local storage',localStorage.getItem('adresse'))
+}
+
+function goToDevis(){
+  router.push('/devis')
+}
 
 function submitSimulation() {
     errors.ressource = [];

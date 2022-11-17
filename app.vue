@@ -6,5 +6,12 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
+  const store = useTestStore()
+
+  onBeforeMount(() => {
+    // console.log('beforemounted')
+    store.initializeAdresse()
+}) 
+
 </script>
