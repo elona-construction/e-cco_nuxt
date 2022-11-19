@@ -20,7 +20,6 @@
                       Libérez vous énergétiquement en investissement dans
                       l'efficience énergétique de votre maison.
                     </p>
-                    <p>test store: {{ store.color }}</p>
                     <div class="container p-4"></div>
 
                     <div class="columns is-centered p-5">
@@ -466,6 +465,9 @@
  const router = useRouter()
  const config = useRuntimeConfig()
 
+ const store = useTestStore();
+ const loadingStore = useLoadingStore();
+
 const adresse = ref("");
 const nom = ref("");
 const prenom = ref("");
@@ -476,7 +478,7 @@ const messageOK = ref(false);
 const errorsForm = reactive({ ressource: [] });
 const errorsAdress = reactive({ ressource: [] });
 
-const store = useTestStore();
+
 
 function submitAdresse() {
   errorsAdress.ressource = [];
@@ -490,12 +492,38 @@ function submitAdresse() {
     store.setAdresse(adresse.value);
     localStorage.setItem("adresse", adresse.value);
     router.push('/simulations')
-
-    // this.$store.commit('setAdresse', this.adresse)
-    // localStorage.setItem("adresse", this.adresse)
-    // this.$router.push('/simulations')
+    //comment or uncomment router.push and checkAdresse depending if backend ready
+    //checkAdresse()
     console.log("adresse Ok Louise");
   }
+}
+
+async function checkAdresse(){
+  // check if function is fast enough that we don't need loading sign
+  // loadingStore.setIsLoading(true)
+  errorsAdress.ressource = []
+
+const data = {
+adresse: store.adresse
+};
+console.log("this is the address to be checked: ", data);
+
+await $fetch( 'api/v1/adress-check/', {
+      baseURL: config.API_BASE_URL,
+      method: 'POST',
+      body: data
+  })
+.then(response => {
+  router.push('/simulations')
+})
+.catch(error => {
+        errorsAdress.ressource.push("L'adresse n'est pas valable ou le format d'écriture n'est pas bon")
+        console.log(error)
+    })
+
+// loadingStore.setIsLoading(false)
+
+
 }
 
 function submitMessage() {
@@ -525,6 +553,7 @@ function submitMessage() {
 }
 async function sendMessage() {
   // this.$store.commit('setIsLoading', true)
+  loadingStore.setIsLoading(true)
 
   const data = {
     nom: nom.value,
@@ -547,6 +576,8 @@ async function sendMessage() {
           errorsForm.ressource.push('Un problème est survenu. Veuillez réessayer')
           console.log(error)
       })
+
+  loadingStore.setIsLoading(false)
 
 }
 

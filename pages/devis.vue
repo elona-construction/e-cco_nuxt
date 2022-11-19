@@ -356,6 +356,9 @@ const selection = ref("Recevoir 3 appels d'offres par intervention via email");
 const errors = reactive({ ressource: [] });
 const orders = reactive({ ressource: [] });
 
+onMounted(() => {
+    setSelectionDevis()
+}) 
 
 
 watch(identique, (newValue, oldValue) => {
@@ -435,4 +438,13 @@ async function sendData() {
     });
   //   this.$store.commit('setIsLoading', false)
 }
+
+function setSelectionDevis(){
+
+          facade.value = store.checked.checkedFaçade
+          toiture.value = store.checked.checkedToiture
+          fenetre.value = store.checked.checkedComble
+          solaire.value = store.checked.checkedSolaire
+          chauffage.value = store.checked.checkedChauffage
+      }
 </script>

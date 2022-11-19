@@ -5,7 +5,6 @@ export const useTestStore = defineStore('TestStore', {
         isAuthenticated: false,
         token: '',
         results: '',
-        isLoading:true,
         adresse:'',
         checked:{
           checkedFaçade:true,
@@ -14,9 +13,6 @@ export const useTestStore = defineStore('TestStore', {
           checkedChauffage:true,
           checkedSolaire:true
         },
-        checkedSolaire: {},
-        count: 0,
-        color:'blue',
       
     }),
     getters: {},
